@@ -1,0 +1,30 @@
+name: Gerar páginas HTML
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositório
+        uses: actions/checkout@v3
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar script para gerar HTML
+        run: npx ts-node generateStaticPages.ts
+
+      - name: Upload das páginas geradas
+        uses: actions/upload-artifact@v3
+        with:
+          name: paginas-html
+          path: dist/

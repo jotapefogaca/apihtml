@@ -1,20 +1,19 @@
-name: Gerar Páginas HTML Estáticas
+# .github/workflows/main.yml
+name: Gerar páginas HTML
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do repositório
+      - name: Clonar repositório
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Instalar Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
@@ -22,11 +21,11 @@ jobs:
       - name: Instalar dependências
         run: npm install
 
-      - name: Executar script de geração
+      - name: Executar script TypeScript
         run: npx ts-node generateStaticPages.ts
 
-      - name: Upload dos HTMLs como artefato
+      - name: Upload das páginas geradas
         uses: actions/upload-artifact@v3
         with:
           name: paginas-geradas
-          path: dist/acompanhante/
+          path: dist/

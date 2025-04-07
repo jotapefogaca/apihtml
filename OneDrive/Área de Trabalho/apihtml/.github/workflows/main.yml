@@ -1,3 +1,4 @@
+# .github/workflows/main.yml
 name: Gerar páginas HTML
 
 on:
@@ -20,11 +21,11 @@ jobs:
       - name: Instalar dependências
         run: npm install
 
-      - name: Executar script para gerar HTML
+      - name: Executar script TypeScript
         run: npx ts-node generateStaticPages.ts
 
       - name: Upload das páginas geradas
         uses: actions/upload-artifact@v3
         with:
-          name: paginas-html
-          path: dist/
+          name: paginas-geradas
+          path: dist/acompanhante/

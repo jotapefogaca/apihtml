@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import fetch from 'node-fetch';
 
-const API_URL = 'http://localhost:3000/api/v1/getAllModels';
+const API_URL = 'https://seusite.com/api/v1/getAllModels';
 const TEMPLATE_PATH = path.join(__dirname, 'modelo-foxylady-final.html');
 const OUTPUT_BASE_DIR = path.join(__dirname, 'dist', 'acompanhante');
 

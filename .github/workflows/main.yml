@@ -1,0 +1,32 @@
+name: Gerar Páginas HTML Estáticas
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar script de geração
+        run: npx ts-node generateStaticPages.ts
+
+      - name: Upload dos HTMLs como artefato
+        uses: actions/upload-artifact@v3
+        with:
+          name: paginas-geradas
+          path: dist/acompanhante/

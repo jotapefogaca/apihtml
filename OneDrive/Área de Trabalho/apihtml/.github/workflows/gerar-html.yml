@@ -4,23 +4,25 @@ on:
   workflow_dispatch:
 
 jobs:
-  gerar-html:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Clonar o repositório
-      uses: actions/checkout@v3
+      - name: Clonar o repositório
+        uses: actions/checkout@v3
 
-    - name: Instalar dependências
-      run: |
-        npm install
-        npm install -D ts-node typescript node-fetch @types/node
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-    - name: Rodar o script
-      run: npx ts-node generateStaticPages.ts
+      - name: Instalar dependências
+        run: npm install
 
-    - name: Salvar artefatos (HTMLs gerados)
-      uses: actions/upload-artifact@v3
-      with:
-        name: paginas-geradas
-        path: dist/acompanhante
+      - name: Executar script de geração
+        run: npx ts-node generateStaticPages.ts
+
+      - name: Salvar HTMLs gerados como artefato
+        uses: actions/upload-artifact@v3
+        with:
+          name: html-gerados
+          path: dist/

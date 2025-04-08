@@ -1,0 +1,22 @@
+[
+  {
+    "nome": "Lalita",
+    "nome_social": "Lalita",
+    "cidade": "Sorocaba",
+    "slug": "lalita",
+    "nickname": "lalita",
+    "midia": {
+      "perfil": "https://www.exemplo.com/imagem-lalita.jpg"
+    }
+  },
+  {
+    "nome": "Camila",
+    "nome_social": "Camila",
+    "cidade": "Campinas",
+    "slug": "camila",
+    "nickname": "camila",
+    "midia": {
+      "perfil": "https://www.exemplo.com/imagem-camila.jpg"
+    }
+  }
+]

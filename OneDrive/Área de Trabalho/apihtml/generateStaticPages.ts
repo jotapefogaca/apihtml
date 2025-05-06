@@ -4,38 +4,38 @@ import fs from 'fs';
 import path from 'path';
 import fetch from 'node-fetch';
 
-const API_URL = 'https://seusite.com/api/v1/getAllModels';
-const TEMPLATE_PATH = path.join(__dirname, 'modelo-foxylady-final.html');
-const OUTPUT_BASE_DIR = path.join(__dirname, 'dist', 'acompanhante');
+const PAGE_URLS = [
+  'https://www.foxylady.com.br/home/acompanhantes',
+  'https://www.foxylady.com.br/home/acompanhantes/new'
+];
 
-async function generatePages() {
+const OUTPUT_BASE_DIR = path.join(__dirname, 'dist', 'cloned_pages');
+
+async function fetchAndSavePage(url: string) {
   try {
-    const res = await fetch(API_URL);
-    const data = await res.json();
-
-    if (!Array.isArray(data)) {
-      throw new Error('Formato inesperado na resposta da API');
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`Erro ao acessar ${url}: ${res.statusText}`);
     }
 
-    const template = fs.readFileSync(TEMPLATE_PATH, 'utf-8');
+    const html = await res.text();
+    const slug = url.split('/').pop() || 'index';
+    const outputDir = path.join(OUTPUT_BASE_DIR, slug);
+    const filePath = path.join(outputDir, 'index.html');
 
-    data.forEach((modelo) => {
-      const html = template
-        .replace(/{{nome}}/g, modelo.nome)
-        .replace(/{{cidade}}/g, modelo.cidade || '')
-        .replace(/{{slug}}/g, modelo.slug)
-        .replace(/{{fotoPerfil}}/g, modelo.fotoPerfil || '');
+    fs.mkdirSync(outputDir, { recursive: true });
+    fs.writeFileSync(filePath, html, 'utf-8');
+    console.log(`✔ Página clonada: ${filePath}`);
 
-      const outputDir = path.join(OUTPUT_BASE_DIR, modelo.slug);
-      const filePath = path.join(outputDir, 'index.html');
-
-      fs.mkdirSync(outputDir, { recursive: true });
-      fs.writeFileSync(filePath, html, 'utf-8');
-      console.log(`✔ Página gerada: ${filePath}`);
-    });
   } catch (err) {
-    console.error('Erro ao gerar páginas:', err);
+    console.error(`Erro ao clonar ${url}:`, err);
   }
 }
 
-generatePages();
+async function clonePages() {
+  for (const url of PAGE_URLS) {
+    await fetchAndSavePage(url);
+  }
+}
+
+clonePages();
